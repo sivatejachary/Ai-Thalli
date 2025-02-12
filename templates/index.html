@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.3/socket.io.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var socket = io();
+            document.getElementById("send").onclick = function() {
+                var message = document.getElementById("user_input").value;
+                socket.emit("user_message", {message: message});
+                document.getElementById("chat").innerHTML += "<div class='user-message'>" + message + "</div>";
+            };
+            socket.on("bot_response", function(data) {
+                document.getElementById("chat").innerHTML += "<div class='bot-message'>" + data.message + "</div>";
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="chat-container">
+        <h2>AI Chat</h2>
+        <div id="chat" class="chat-box"></div>
+        <div class="input-container">
+            <input type="text" id="user_input" placeholder="Type a message...">
+            <button id="send">Send</button>
+        </div>
+    </div>
+</body>
+</html>
